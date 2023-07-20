@@ -4,7 +4,14 @@ import numpy as np
 class Flow(Scene):
 
     def MakeNodes(self, n, R, node_positions, adj_mat):
-        
+        '''
+        Inputs: 
+        n = number of nodes
+        R = radius of each node circle
+        node_positions is a 3xn array where the i-th column is the position of the i-th node
+        adj_mat is the adjacency matrix, where a 1 in the (i,j)th entry indicates an arrow pointing from node i to node j
+        '''
+    
         Nodes = VGroup()
         Edges = VGroup()
 
@@ -16,7 +23,7 @@ class Flow(Scene):
             
             Nodes = Nodes.add(node_gp)
         
-        edge_endpts = [];
+        edge_endpts = []
 
         for i in range(n):
             for j in range(n):
@@ -38,15 +45,25 @@ class Flow(Scene):
 
     def construct(self):
         
-        n = 7;
-        r = 0.3;
-        adj_mat = np.array([ [0, 1, 1, 1, 0, 0, 0], [0, 0, 0, 0, 1, 0, 0], [0, 0, 0, 1, 0, 1, 0], [0, 1, 0, 0, 1, 1, 0], [0, 0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 1, 0, 1], [0, 0, 0, 0, 0, 0, 0]  ])
-        pos = np.array([ [-5, -2.5, -2.5, 0,  2.5, 2.5, 5], [0, 3, -3, 0,  3, -3, 0], [0, 0, 0, 0, 0, 0, 0] ])
-        G = self.MakeNodes(n, r, pos, adj_mat)
-        Nodes = G[0]
-        Edges = G[1]
-        edge_endpts = G[2]
+        n = 7
+        r = 0.3
+        adj_mat = np.array([ 
+            [0, 1, 1, 1, 0, 0, 0], 
+            [0, 0, 0, 0, 1, 0, 0], 
+            [0, 0, 0, 1, 0, 1, 0], 
+            [0, 1, 0, 0, 1, 1, 0], 
+            [0, 0, 0, 0, 0, 0, 1], 
+            [0, 0, 0, 0, 1, 0, 1], 
+            [0, 0, 0, 0, 0, 0, 0]  
+        ])
 
+        pos = np.array([ 
+            [ -5, -2.5, -2.5,   0,  2.5,  2.5,   5], 
+            [  0,    3,   -3,   0,    3,   -3,   0], 
+            [  0,    0,    0,   0,    0,    0,   0] 
+        ])
+        
+        [Nodes, Edges, edge_endpts] = self.MakeNodes(n, r, pos, adj_mat)
     
         self.play(Write(VGroup(Nodes, Edges)), run_time = 3)
         self.wait(1)
