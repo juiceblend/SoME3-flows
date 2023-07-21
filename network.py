@@ -3,27 +3,36 @@ import numpy as np
 
 class Network:
     '''
-    Implements a graph of Node objects as a dictionary
-    https://www.tutorialspoint.com/python_data_structure/python_graphs.htm
+    Implements a graph of Node and Edge objects
+    Nodes are stored in a dictionary where each Node acts as a key for all its outgoing edges
     '''
 
-    def __init__(self, nodes = []):
+    def __init__(self, nodes = [], edges = []):
         '''
-        Takes as argument a list of nodes
+        Args:
+            nodes    ([Node]): array of Nodes in the network
+            edges    ([Edge]): array of Edges in the network
         '''
+
+        self.edges = edges
 
         self.graph = {}
         for node in nodes:
             self.graph[node] = set()
+            for edge in self.edges:
+                if edge.start_node == node:
+                    self.graph[node].add(edge)
 
         self.size = len(self.graph)
 
 
     def add_node(self, node, **kwargs):
+        # implement if needed
+
         '''
-        Takes optional arguments
-        in_nodes: array of nodes
-        out_nodes: array of nodes
+        Keyword Args:
+            in_nodes    ([Node]): array of nodes with edges going into the new node
+            out_nodes   ([Node]): array of nodes with edges going out of the new node
         '''
         adj_edges = {
             'in_nodes' : [],
@@ -31,33 +40,23 @@ class Network:
         }
         adj_edges.update(kwargs)
 
-        self.graph[node] = set(adj_edges['out_nodes'])
-
-        for in_node in adj_edges['in_nodes']:
-            self.graph[in_node].add(node)
-        
-        self.size = self.size + 1
+        return
     
-    def add_edge(self, start_node, end_node) -> bool: 
+    def add_edge(self, edge): 
+        # implement if needed            
+        return
 
-        if start_node in self.graph:
-            self.graph[start_node].add(end_node)
-            return True
-
-        return False
-
-    def to_manim(self):
+    def to_VGroup(self):
         # output Vgroups for Nodes, Edges
 
         Nodes = VGroup()
         Edges = VGroup()
 
         for node in self.graph:
-            Nodes = Nodes.add(node.to_manim())
-            for out_node in self.graph[node]:
-                # TODO: make this edge weight adjustable
-                edge = Arrow(start = node.pos, end = out_node.pos, buff = 0.1)
-                Edges.add(edge)
+            Nodes = Nodes.add(node.to_VGroup())
+        
+        for edge in self.edges:
+            Edges.add(edge.to_VGroup())
 
         return Nodes, Edges
 
@@ -65,16 +64,17 @@ class Network:
 class Node:
     def __init__(self, pos: list, label: str, **kwargs):
         '''
-        Takes as optional arguments
-        in_S: is 1 if node is in S, -1 if node is in Sbar, 0 otherwise.
-        R: radius of drawn circle
-        fill_color: fill_color
+        Args:
+            pos        ([arr]): coords of Node, given as [x,y,z]
+            label        (str): label displayed in animation
+
+        Keyword Args:
+            in_S         (int): is 1 if node is in S, -1 if node is in Sbar, 0 otherwise.
+            R          (float): radius of drawn circle
+            fill_color (color): fill_color
         '''
 
-        self.pos = pos
-        self.label = label
-
-        # default initialization values
+        # default initialization values for Keyword arguments
         init_values = {
             'in_S' : 0,
             'R' : 0.3,
@@ -82,11 +82,13 @@ class Node:
         }
         init_values.update(kwargs)
 
+        self.pos = pos
+        self.label = label
         self.in_S = init_values['in_S']
         self.R = init_values['R']
         self.fill_color = init_values['fill_color']
 
-    def to_manim(self):
+    def to_VGroup(self):
         node_text = Tex(self.label)
         node = Circle(radius = self.R, fill_color = self.fill_color, fill_opacity = 0.4).surround(node_text)
 
@@ -94,4 +96,57 @@ class Node:
         node_group.move_to(self.pos)
 
         return node_group
+    
+
+
+class Edge:
+    def __init__(self, start_node: Node, end_node: Node, capacity: int, **kwargs):
+        '''
+        Args:
+            start_node   (Node): starting Node
+            end_node     (Node): ending Node
+            capacity      (int): capacity of edge
+
+        Keyword Args:
+            display_capacity (bool): controls whether the capacity is displayed underneath the edge
+            current_flow      (int): current flow through the edge
+            buff            (float): not sure what this does
+        '''
+
+        self.start_node = start_node
+        self.end_node = end_node
+        self.capacity = capacity
+
+        # default initialization values for Keyword arguments
+        init_values = {
+            'buff': end_node.R + (np.linalg.norm(np.array(end_node.pos) - np.array(start_node.pos))/10),
+            'display_capacity': False,
+            'current_flow': 0
+        }
+        init_values.update(kwargs)
+
+        self.buff = init_values['buff']
+        self.display_capacity = init_values['display_capacity']
+        self.current_flow = 0
+
+    def to_VGroup(self):
+
+        #TODO: 
+        # - different color/display for current_flow != 0
+        # - Make capacity display position adjustable/more clear? 
+
+        start_pos = np.array(self.start_node.pos)
+        end_pos = np.array(self.end_node.pos)
+
+        edge = Arrow(start = start_pos, end = end_pos, buff = self.buff)
+
+        if self.display_capacity:
+            edge_text = Tex(str(self.capacity))
+            edge_text.move_to((start_pos + end_pos)/2 - np.array([0.1,0.3,0]))
+            edge_group = VGroup(edge_text, edge)
+        else:
+            edge_group = edge
+
+        return edge_group
+
 
