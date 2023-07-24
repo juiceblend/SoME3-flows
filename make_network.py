@@ -4,7 +4,7 @@ from network import *
 
 class MakeNetwork:
 
-    def __init__(self, n, R, node_positions, adj_mat):
+    def __init__(self, n, R, node_positions, adj_mat, show_capacity = False):
         '''
         Inputs: 
         n = number of nodes
@@ -23,7 +23,7 @@ class MakeNetwork:
         for i in range(n):
             for j in range (n):
                 if adj_mat[i,j] > 0:
-                    edge_list.append(Edge(nodes[i], nodes[j], adj_mat[i,j]))
+                    edge_list.append(Edge(nodes[i], nodes[j], adj_mat[i,j], display_capacity = show_capacity))
                     edge_endpts.append([i, j])
         
         graph = Network(nodes, edge_list)

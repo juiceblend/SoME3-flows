@@ -8,14 +8,15 @@ class FordFulkersonExample(Scene):
         
         n = 7
         r = 0.3
+        show_cap = True
 
         adj_mat = np.array([ 
-            [0, 1, 1, 1, 0, 0, 0], 
-            [0, 0, 0, 0, 1, 0, 0], 
-            [0, 0, 0, 1, 0, 1, 0], 
-            [0, 1, 0, 0, 1, 1, 0], 
-            [0, 0, 0, 0, 0, 0, 1], 
-            [0, 0, 0, 0, 1, 0, 1], 
+            [0, 8, 9, 5, 0, 0, 0], 
+            [0, 0, 0, 0, 6, 0, 0], 
+            [0, 0, 0, 7, 0, 5, 0], 
+            [0, 1, 0, 0, 2, 6, 0], 
+            [0, 0, 0, 0, 0, 0, 11], 
+            [0, 0, 0, 0, 4, 0, 13], 
             [0, 0, 0, 0, 0, 0, 0]  
         ])
 
@@ -25,10 +26,12 @@ class FordFulkersonExample(Scene):
             [  0,    0,    0,   0,    0,    0,   0] 
         ])
         
-        network = MakeNetwork(n, r, pos, adj_mat)
+        network = MakeNetwork(n, r, pos, adj_mat, show_capacity=show_cap)
         Nodes = network.Nodes
         Edges = network.Edges
         edge_endpts = network.edge_endpts
+
+
     
         self.play(Write(VGroup(Nodes, Edges)), run_time = 3)
         self.wait(1)
