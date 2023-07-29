@@ -78,7 +78,7 @@ class Node:
         # default initialization values for Keyword arguments
         init_values = {
             'in_S' : 0,
-            'R' : 0.3,
+            'R' : 0.5,
             'fill_color': RED
         }
         init_values.update(kwargs)
@@ -91,10 +91,11 @@ class Node:
 
     def to_VGroup(self):
         node_text = Tex(self.label)
-        node = Circle(radius = self.R, fill_color = self.fill_color, fill_opacity = 0.4).surround(node_text)
+        node = Dot(point = self.pos, radius = self.R, fill_opacity = 0.3, color = self.fill_color)
+        node.move_to(self.pos)
+        node_text.move_to(node.get_center())
 
         node_group = VGroup(node_text, node)
-        node_group.move_to(self.pos)
 
         return node_group
     
@@ -116,11 +117,27 @@ class Edge:
 
         self.start_node = start_node
         self.end_node = end_node
+
+        # Define numpy vectors for quantities that will be used later
+
+        self.start_pos = np.array(self.start_node.pos)
+        self.end_pos = np.array(self.end_node.pos)
+        self.midpt = 0.5*(self.start_pos + self.end_pos) # midpoint of the edge
+
+        '''
+        Gets the normal to the edge.
+        This isn't particularly important - just helps make some things more readable/look better 
+        '''
+
+        R = np.array([[0, -1, 0], [1, 0, 0], [0, 0, 1]]) # rotate pi/2
+        normal = (R @ (self.end_pos - self.start_pos)) # get normal to edge by rotating vector by pi/2
+        self.unit_normal =  normal/np.linalg.norm(normal)
+
         self.capacity = capacity
 
         # default initialization values for Keyword arguments
         init_values = {
-            'buff': end_node.R + (np.linalg.norm(np.array(end_node.pos) - np.array(start_node.pos))/10),
+            'buff': end_node.R + (np.linalg.norm(self.end_pos - self.start_pos)/10),
             'display_capacity': False,
             'current_flow': 0
         }
@@ -136,25 +153,17 @@ class Edge:
         # - different color/display for current_flow != 0
         # - Make capacity display position adjustable/more clear? 
 
-        start_pos = np.array(self.start_node.pos)
-        end_pos = np.array(self.end_node.pos)
 
-        edge = Arrow(start = start_pos, end = end_pos, buff = self.buff)
+        edge = Arrow(start = self.start_pos, end = self.end_pos, buff = self.buff)
 
         '''
         To adjust the position of the capacity, we go out in a normal direction to the edge
         Also adjust font size
         '''
 
-        R = np.array([[0, -1, 0], [1, 0, 0], [0, 0, 1]]) # rotate pi/2
-        midpt = 0.5*(start_pos + end_pos) # get midpoint of edge
-        normal = (R @ (end_pos-start_pos)) # get normal to edge by rotating vector by pi/2
-        unit_normal =  normal/np.linalg.norm(normal)
-        
-
         if self.display_capacity:
             edge_text = Tex(str(self.capacity)).scale(0.8) # adjust font size
-            edge_text.move_to(midpt + 0.5*unit_normal) # set position of capacity text relative to the edge
+            edge_text.move_to(self.midpt + 0.5*self.unit_normal) # set position of capacity text relative to the edge
             edge_group = VGroup(edge_text, edge)
         else:
             edge_group = edge
