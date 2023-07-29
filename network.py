@@ -91,10 +91,11 @@ class Node:
 
     def to_VGroup(self):
         node_text = Tex(self.label)
-        node = Circle(radius = self.R, fill_color = self.fill_color, fill_opacity = 0.4).surround(node_text)
+        node = Dot(point = self.pos, radius = self.R, fill_opacity = 0.3, color = self.fill_color)
+        node.move_to(self.pos)
+        node_text.move_to(node.get_center())
 
         node_group = VGroup(node_text, node)
-        node_group.move_to(self.pos)
 
         return node_group
     
@@ -141,15 +142,20 @@ class Edge:
 
         edge = Arrow(start = start_pos, end = end_pos, buff = self.buff)
 
-        R = np.array([[0, -1, 0], [1, 0, 0], [0, 0, 1]])
-        midpt = 0.5*(start_pos + end_pos)
-        normal = (R @ (end_pos-start_pos))
+        '''
+        To adjust the position of the capacity, we go out in a normal direction to the edge
+        Also adjust font size
+        '''
+
+        R = np.array([[0, -1, 0], [1, 0, 0], [0, 0, 1]]) # rotate pi/2
+        midpt = 0.5*(start_pos + end_pos) # get midpoint of edge
+        normal = (R @ (end_pos-start_pos)) # get normal to edge by rotating vector by pi/2
         unit_normal =  normal/np.linalg.norm(normal)
         
 
         if self.display_capacity:
-            edge_text = Tex(str(self.capacity)).scale(0.8)
-            edge_text.move_to(midpt + 0.5*unit_normal)
+            edge_text = Tex(str(self.capacity)).scale(0.8) # adjust font size
+            edge_text.move_to(midpt + 0.5*unit_normal) # set position of capacity text relative to the edge
             edge_group = VGroup(edge_text, edge)
         else:
             edge_group = edge

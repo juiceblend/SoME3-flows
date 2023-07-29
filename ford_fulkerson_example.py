@@ -7,7 +7,7 @@ class FordFulkersonExample(Scene):
     def construct(self):
         
         n = 7
-        r = 0.3
+        r = 0.5
         show_cap = True
 
         adj_mat = np.array([ 
@@ -37,6 +37,6 @@ class FordFulkersonExample(Scene):
         self.wait(1)
 
         path1 = [[0,1], [1,4], [4,6]]
-        animations_1 = network.AugmentPath(path1, Edges, edge_endpts)
+        animations_1 = network.AugmentPath(path1)
         anim_group_1 = AnimationGroup(*animations_1)
         self.play(AnimationGroup(anim_group_1, run_time=2, lag_ratio = 0.2))
