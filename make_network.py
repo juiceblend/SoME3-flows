@@ -47,7 +47,7 @@ class MakeNetwork:
             e = self.graph.edges[k]
             new_edge = Edge(e.start_node, e.end_node, e.capacity, display_capacity = e.display_capacity, current_flow = e.current_flow + amount, buff = e.buff)
             new_edge_mobject = new_edge.to_VGroup()
-            anims.append( FadeTransform(self.Edges[k], new_edge_mobject) )
+            anims.append( FadeTransform(self.Edges[k][2], new_edge_mobject[2]) )
 
         return anims
 
