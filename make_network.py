@@ -1,4 +1,3 @@
-from heapq import nsmallest
 from manim import *
 import numpy as np
 from network import *
@@ -38,12 +37,21 @@ class MakeNetwork:
         self.Nodes, self.Edges = self.graph.to_VGroup()
         self.edge_endpts = edge_endpts
     
-    def AugmentPath(self, path):
+    def AugmentPath(self, path, amount):
 
         indices = [self.edge_endpts.index(u) for u in path]  # given the endpoints, find the index of the endpoints in edge_endpts
-        animations = [Indicate(self.Edges[k]) for k in indices] # this index is then used to get the actual edge and highlight it
+        anims = []
         
-        return animations
+        for k in indices:
+            anims.append(Indicate(self.Edges[k][1]))
+            e = self.graph.edges[k]
+            new_edge = Edge(e.start_node, e.end_node, e.capacity, display_capacity = e.display_capacity, current_flow = e.current_flow + amount, buff = e.buff)
+            new_edge_mobject = new_edge.to_VGroup()
+            anims.append( FadeTransform(self.Edges[k], new_edge_mobject) )
+
+        return anims
+
+        """ return highlight_anim """
     
     def DrawCut(self, endpt_list):
         indices = [self.edge_endpts.index(u) for u in endpt_list] # given the endpoints, find the index of the endpoints in edge_endpts

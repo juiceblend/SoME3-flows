@@ -103,6 +103,7 @@ class Node:
 
 class Edge:
     def __init__(self, start_node: Node, end_node: Node, capacity: int, **kwargs):
+
         '''
         Args:
             start_node   (Node): starting Node
@@ -145,26 +146,27 @@ class Edge:
 
         self.buff = init_values['buff']
         self.display_capacity = init_values['display_capacity']
-        self.current_flow = 0
+        self.current_flow = init_values['current_flow']
 
     def to_VGroup(self):
 
         #TODO: 
-        # - different color/display for current_flow != 0
-        # - Make capacity display position adjustable/more clear? 
-
-
-        edge = Arrow(start = self.start_pos, end = self.end_pos, buff = self.buff)
+        # - different color/display for current_flow != 0 
 
         '''
         To adjust the position of the capacity, we go out in a normal direction to the edge
         Also adjust font size
         '''
 
+        edge = Arrow(start = self.start_pos, end = self.end_pos, buff = self.buff)
+
+        flow_text = Tex(str(self.current_flow), color = WHITE).scale(0.8)
+        flow_text.move_to(self.midpt + 0.5*self.unit_normal)
+
         if self.display_capacity:
-            edge_text = Tex(str(self.capacity)).scale(0.8) # adjust font size
-            edge_text.move_to(self.midpt + 0.5*self.unit_normal) # set position of capacity text relative to the edge
-            edge_group = VGroup(edge_text, edge)
+            edge_text = Tex(str(self.capacity), color = RED).scale(0.6) # adjust font size
+            edge_text.move_to(self.midpt - 0.5*self.unit_normal) # set position of capacity text relative to the edge
+            edge_group = VGroup(edge_text, edge, flow_text)
         else:
             edge_group = edge
 
