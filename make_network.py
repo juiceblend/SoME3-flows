@@ -49,6 +49,9 @@ class MakeNetwork:
             new_edge_mobject = new_edge.to_VGroup()
             anims.append( FadeTransform(self.Edges[k][2], new_edge_mobject[2]) )
 
+            e.current_flow += amount
+            self.Edges[k][2] = new_edge_mobject[2]
+
         return anims
 
         """ return highlight_anim """

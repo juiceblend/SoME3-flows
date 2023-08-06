@@ -54,12 +54,18 @@ class BasicExample(Scene):
 
         path1 = [[0,1], [1,4], [4,6]]
         animations_1 = network.AugmentPath(path1, amount=2)
-        print(animations_1)
         
         """ anim_group_1 = AnimationGroup(*animations_1)
         self.play(AnimationGroup(anim_group_1, run_time=4, lag_ratio = 0.9)) """
 
-        self.play(*animations_1)
+        self.play(*animations_1, run_time=1.5)
+
+        self.wait(2)
+
+        path2 = [[0,3], [3, 1], [1,4], [4,6]]
+        animations_2 = network.AugmentPath(path2, amount=1)
+
+        self.play(*animations_2, run_time=1.5)
 
         self.wait(2)
 
