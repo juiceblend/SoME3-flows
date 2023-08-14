@@ -5,7 +5,7 @@ from network import *
 
 class MakeNetwork:
 
-    def __init__(self, n, r, node_positions, adj_mat, show_capacity = False):
+    def __init__(self, n, r, node_positions, adj_mat, show_capacity = False, **kwargs):
         '''
         Inputs: 
         n = number of nodes
@@ -20,12 +20,31 @@ class MakeNetwork:
         self.adj_mat = adj_mat
         self.show_capacity = show_capacity
 
+        init_values = {
+            'labels' : [i for i in range(n)],
+            'highlight_endpoints' : False
+        }
+        init_values.update(kwargs)
+
+        self.labels = init_values['labels']
+        self.highlight_endpoints = init_values['highlight_endpoints']
+
         nodes = []
         edge_list = []
         edge_endpts = []
 
-        for i in range(self.n):
-            nodes.append(Node(self.node_positions[:, i], str(i), R = self.r))
+        if self.highlight_endpoints:
+            nodes.append(Node(self.node_positions[:, 0], str(self.labels[0]), R = self.r, fill_color = GREEN))
+            for i in range(1,self.n-1):
+                nodes.append(Node(self.node_positions[:, i], str(self.labels[i]), R = self.r))
+            nodes.append(Node(self.node_positions[:, self.n-1], str(self.labels[self.n-1]), R = self.r, fill_color = GREEN))
+        else:
+            nodes.append(Node(self.node_positions[:, 0], str(self.labels[0]), R = self.r))
+            for i in range(1,self.n-1):
+                nodes.append(Node(self.node_positions[:, i], str(self.labels[i]), R = self.r))
+            nodes.append(Node(self.node_positions[:, self.n-1], str(self.labels[self.n-1]), R = self.r))
+
+        
 
         for i in range(self.n):
             for j in range (self.n):
