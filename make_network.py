@@ -23,8 +23,23 @@ class MakeNetwork:
         edge_list = []
         edge_endpts = []
 
+<<<<<<< Updated upstream
         for i in range(self.n):
             nodes.append(Node(self.node_positions[:, i], str(i), R = self.r))
+=======
+        if self.highlight_endpoints:
+            nodes.append(Node(self.node_positions[:, 0], str(self.labels[0]), R = self.r, fill_color = GREEN))
+            for i in range(1,self.n-1):
+                nodes.append(Node(self.node_positions[:, i], str(self.labels[i]), R = self.r))
+            nodes.append(Node(self.node_positions[:, self.n-1], str(self.labels[self.n-1]), R = self.r, fill_color = BLUE))
+        else:
+            nodes.append(Node(self.node_positions[:, 0], str(self.labels[0]), R = self.r))
+            for i in range(1,self.n-1):
+                nodes.append(Node(self.node_positions[:, i], str(self.labels[i]), R = self.r))
+            nodes.append(Node(self.node_positions[:, self.n-1], str(self.labels[self.n-1]), R = self.r))
+
+        
+>>>>>>> Stashed changes
 
         for i in range(self.n):
             for j in range (self.n):
@@ -57,6 +72,13 @@ class MakeNetwork:
 
         """ return highlight_anim """
     
+    def WiggleEdges(self, edges):
+
+        indices = [self.edge_endpts.index(u) for u in edges]  
+        animations = [Wiggle(self.Edges[k]) for k in indices]
+        
+        return animations
+    
     def DrawCut(self, endpt_list):
         indices = [self.edge_endpts.index(u) for u in endpt_list] # given the endpoints, find the index of the endpoints in edge_endpts
         edge_list = [self.graph.edges[k] for k in indices] # use the index to get the actual edge
@@ -74,6 +96,6 @@ class MakeNetwork:
 
         curve = VMobject()
         curve.set_points_smoothly(midpt_list)
-        curve = DashedVMobject(curve, num_dashes = 30, equal_lengths = True)
+        curve = DashedVMobject(curve, num_dashes = 30, equal_lengths = True, color=YELLOW_C)
 
         return curve

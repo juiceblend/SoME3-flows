@@ -79,3 +79,4 @@ class BasicExample(Scene):
         self.play(Create(cut_1))
         
         self.wait(2)
+        self.play(Nodes[1].animate.set_color(GREEN))
