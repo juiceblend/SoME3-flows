@@ -2,6 +2,11 @@ from manim import *
 import random
 
 class Card(Scene):
+
+    def get_text(card):
+        card_text = card.submobjects
+        return card_text[0].text
+    
     def construct(self):
         colors = [PURPLE, RED, DARK_BLUE, GREEN_E]
         # A deck of 52 squares (cards) with their indices (rank) written on them
