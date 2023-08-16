@@ -1,3 +1,4 @@
+from re import I
 from tracemalloc import start
 from manim import *
 import numpy as np
@@ -140,13 +141,16 @@ class Edge:
         init_values = {
             'buff': end_node.R + (np.linalg.norm(self.end_pos - self.start_pos)/10),
             'display_capacity': False,
-            'current_flow': 0
+            'current_flow': 0,
+            'arrow_color': "WHITE"
         }
         init_values.update(kwargs)
 
         self.buff = init_values['buff']
         self.display_capacity = init_values['display_capacity']
         self.current_flow = init_values['current_flow']
+        self.arrow_color = init_values['arrow_color']
+
 
     def to_VGroup(self):
 
@@ -158,7 +162,15 @@ class Edge:
         Also adjust font size
         '''
 
-        edge = Arrow(start = self.start_pos, end = self.end_pos, buff = self.buff)
+        if 0 < self.current_flow and self.current_flow < self.capacity:
+            self.arrow_color = 'GOLD'
+        elif self.current_flow == self.capacity:
+            self.arrow_color = 'RED'
+        else:
+            self.arrow_color = 'WHITE'
+        
+
+        edge = Arrow(start = self.start_pos, end = self.end_pos, buff = self.buff, color = self.arrow_color)
 
         flow_text = Tex(str(self.current_flow), color = WHITE).scale(0.8)
         flow_text.move_to(self.midpt + 0.5*self.unit_normal)

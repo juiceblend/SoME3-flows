@@ -45,9 +45,10 @@ class MakeNetwork:
         for k in indices:
             anims.append(Indicate(self.Edges[k][1]))
             e = self.graph.edges[k]
-            new_edge = Edge(e.start_node, e.end_node, e.capacity, display_capacity = e.display_capacity, current_flow = e.current_flow + amount, buff = e.buff)
+            new_edge = Edge(e.start_node, e.end_node,capacity=e.capacity, display_capacity = e.display_capacity, current_flow = e.current_flow + amount, buff = e.buff)
             new_edge_mobject = new_edge.to_VGroup()
             anims.append( FadeTransform(self.Edges[k][2], new_edge_mobject[2]) )
+            self.Edges[k][1].become(new_edge_mobject[1])
 
             e.current_flow += amount
             self.Edges[k][2] = new_edge_mobject[2]

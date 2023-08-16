@@ -15,8 +15,6 @@ class FordFulkersonExample(Scene):
         self.play(FadeOut(chapter_title))
         self.wait(3)
 
-
-
         n = 7
         r = 0.5
         show_cap = True
