@@ -79,7 +79,7 @@ class Node:
         init_values = {
             'in_S' : 0,
             'R' : 0.5,
-            'fill_color': RED
+            'fill_color': GREEN
         }
         init_values.update(kwargs)
 
