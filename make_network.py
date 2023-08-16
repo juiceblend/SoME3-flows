@@ -10,7 +10,7 @@ class MakeNetwork:
         Inputs: 
         n = number of nodes
         r = radius
-        node_positions is a 3xn array where the i-th column is the position of the i-th node
+        node_positions is a 2d array with dimensions 3xn where the i-th column is the position of the i-th node
         adj_mat is the adjacency matrix, adj[i,j] = capacity[i,j] if there is edge from i to j and adj[i,j] = 0 otherwise
         '''
 
