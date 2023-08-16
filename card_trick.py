@@ -27,10 +27,7 @@ class Trick(Scene):
         piles2nodes = self.transformpiles()
         self.play(*piles2nodes, run_time=3)
         
-        n = 28
-        r = 0.2
-        show_cap = True
-
+        
         source_adj_row = [0, 
                           1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
                           0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ,0,
@@ -68,7 +65,7 @@ class Trick(Scene):
 
         pc = [pile.get_center() for pile in self.piles_group]
 
-        x_coords = [-7]
+        x_coords = [-6]
         y_coords = [0]
         for c in pc:
             x_coords.append(c[0] - 4)
@@ -76,12 +73,16 @@ class Trick(Scene):
         for c in pc:
             x_coords.append(c[0] + 4)
             y_coords.append(c[1])
-        x_coords.append(7)
+        x_coords.append(6)
         y_coords.append(0)
 
         pos = np.array([ x_coords, y_coords, [ 0 for _ in range(28) ] ])
-        
-        network = MakeNetwork(n, r, pos, adj_mat, show_capacity=show_cap)
+
+        n = 28
+        r = 0.2
+        show_cap = True
+
+        network = MakeNetwork(n, r, pos, adj_mat)
 
         Nodes = network.Nodes
         Edges = network.Edges
@@ -89,5 +90,6 @@ class Trick(Scene):
 
         # draw network
         self.play(FadeOut(self.piles_group), run_time=0.5)
+
         self.play(Write(VGroup(Nodes, Edges)), run_time = 5)
-        self.wait(1)
+        self.wait()
