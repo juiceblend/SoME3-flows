@@ -1,3 +1,4 @@
 *.pyc
 **/media
 test.py
+.DS_Store
