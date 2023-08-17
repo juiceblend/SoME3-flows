@@ -65,10 +65,20 @@ class ChapterOne(Scene):
         self.play(FadeIn(title))
         self.wait(4)
 
-class ChapterTwo(Scene):
+class ChapterTwoPt1(Scene):
     def construct(self):
-        title = Tex("2. Finding the maximum flow through a network")
-        self.play(FadeIn(title))
+        title = Tex(r"2. Finding the maximum flow through a network",r"\\", "The Ford Fulkerson Algorithm")
+        title[2].set_color(BLUE)
+        self.play(Write(title[0]))
+        self.play(FadeIn(title[2]))
+        self.wait(4)
+
+class ChapterTwoPt2(Scene):
+    def construct(self):
+        title = Tex(r"2. Finding the maximum flow through a network",r"\\", r"The Max Cut/Min Flow Algorithm")
+        title[2].set_color(BLUE)
+        self.play(Write(title[0]))
+        self.play(FadeIn(title[2]))
         self.wait(4)
 
 '''
