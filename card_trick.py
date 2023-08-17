@@ -47,7 +47,7 @@ class Trick(Scene):
 
             for r in range(13):
                 if r in ranks:
-                    template.append(np.inf)
+                    template.append(float("inf"))
                 else:
                     template.append(0)
 
@@ -93,16 +93,16 @@ class Trick(Scene):
         self.play(FadeOut(self.piles_group), run_time=0.5)
 
         self.play(Write(VGroup(Nodes, Edges)), run_time = 5)
+        INF = int(1e9)
+        graph_mat = [[int(cap) if cap != float("inf") else INF for cap in row] for row in adj_mat]
 
-        graph = GraphNet(adj_mat)
-
-        max_flow, paths = graph.FordFulkerson(0, 27)
+        max_flow, paths = ford_fulkerson(graph_mat, 0, 27)
         print(paths)
         print(max_flow)
-        print(graph.graph)
-        '''last_path = paths[-1][-2:]
-        last_path += [[25,27]]
-        paths[-1] = last_path'''
+        #for i in [2,1]:
+        #    problem_path = paths[-i]
+        #    last_path += [[25,27]]
+        #    paths[-1] = last_path
         edges_visited = []
         for path in paths:
             for edge in path:
