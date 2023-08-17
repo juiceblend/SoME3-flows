@@ -1,51 +1,49 @@
-from collections import defaultdict
-
-class GraphNet:
-
-    def __init__(self, graph):
-        self.graph = graph
-        self.ROW = len(graph)
-
-    def BFS(self, s, t, parent):
-        visited = [False] * self.ROW
-        queue = []
-        queue.append(s)
-        visited[s] = True
-
+def ford_fulkerson(graph, source, sink):
+    def bfs(graph, parent):
+        visited = [False] * len(graph)
+        queue = [source]
+        visited[source] = True
+        
         while queue:
-            u = queue.pop(0)
-
-            for ind, val in enumerate(self.graph[u]):
-                if visited[ind] == False and val > 0:
-                    queue.append(ind)
-                    visited[ind] = True
-                    parent[ind] = u
-                    if ind == t:
-                        return True
-        return False
-
-    def FordFulkerson(self, source, sink):
-        parent = [-1] * self.ROW
-        max_flow = 0
+            current_node = queue.pop(0)
+            for node, capacity in enumerate(graph[current_node]):
+                if not visited[node] and capacity > 0:
+                    queue.append(node)
+                    parent[node] = current_node
+                    visited[node] = True
+        return visited[sink]
+    
+    def find_path(parent):
         path = []
-
-        while self.BFS(source, sink, parent):
-            path_flow = float("Inf")
-            s = sink
-            while s != source:
-                path_flow = min(path_flow, self.graph[parent[s]][s])
-                s = parent[s]
-
-            current_path = []
-            v = sink
-            while v != source:
-                u = parent[v]
-                current_path.append([u, v])  # Store the edge in the path
-                self.graph[u][v] = max(self.graph[u][v] - path_flow, 0)
-                self.graph[v][u] += path_flow
-                v = parent[v]
-            path.append(current_path)  # Store the current path
-
-            max_flow += path_flow
-
-        return max_flow, path  # Return the maximum flow and the list of paths
+        node = sink
+        while node != -1:
+            path.insert(0, node)
+            node = parent[node]
+        return path
+    
+    max_flow = 0
+    parent = [-1] * len(graph)
+    paths_used = []
+    
+    while bfs(graph, parent):
+        path = find_path(parent)
+        min_capacity = float('inf')
+        
+        for i in range(len(path) - 1):
+            u, v = path[i], path[i + 1]
+            min_capacity = min(min_capacity, graph[u][v])
+            
+        max_flow += min_capacity
+        paths_used.append(path)
+        
+        for i in range(len(path) - 1):
+            u, v = path[i], path[i + 1]
+            graph[u][v] -= min_capacity
+            graph[v][u] += min_capacity
+            
+    edge_paths_used = []
+    for path in paths_used:
+        edge_path = [[path[i], path[i + 1]] for i in range(len(path) - 1)]
+        edge_paths_used.append(edge_path)
+            
+    return max_flow, edge_paths_used
