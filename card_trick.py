@@ -110,7 +110,7 @@ class Trick(Scene):
                     edges_visited.append(edge)
 
         #print(edges_visited)
-        animations_1 = network.AugmentPath(edges_visited)
+        animations_1 = network.AugmentPath(edges_visited, amount=0)
         anim_group_1 = AnimationGroup(*animations_1)
         self.play(AnimationGroup(anim_group_1, run_time=2, lag_ratio = 0.2))
         self.wait()

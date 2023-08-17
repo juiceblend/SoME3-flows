@@ -176,7 +176,7 @@ class Edge:
             self.arrow_color = 'WHITE'
         
 
-        edge = Arrow(start = self.start_pos, end = self.end_pos, buff = self.buff, color = self.arrow_color)
+        #edge = Arrow(start = self.start_pos, end = self.end_pos, buff = self.buff, color = self.arrow_color)
 
         flow_text = Tex(str(self.current_flow), color = WHITE).scale(0.8)
         flow_text.move_to(self.midpt + 0.5*self.unit_normal)

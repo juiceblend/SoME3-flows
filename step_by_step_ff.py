@@ -81,3 +81,15 @@ class Trick(Scene):
         edge_endpts = network.edge_endpts
 
         self.play(Write(VGroup(Nodes, Edges)), run_time = 5)
+
+        path1 = [[0,1], [1,22], [22,27]]
+        animations_1 = network.AugmentPath(path1, amount=0)
+        self.play(*animations_1, run_time=2)
+        self.wait(33)
+        
+
+        # Augment by 1
+        # t=99
+        animations_2 = network.AugmentPath(path1, amount=1)
+        self.play(*animations_2, run_time=2)
+        self.wait(20)
