@@ -161,7 +161,8 @@ class Edge:
         buff_start = self.start_pos + (RIGHT * self.start_node.R)
         buff_end = self.end_pos + (LEFT * self.start_node.R)
 
-        edge = Arrow(start = buff_start, end = buff_end, stroke_width=2)
+        #edge = Arrow(start = buff_start, end = buff_end, stroke_width=2)
+        edge = Arrow(start = self.start_pos, end = self.end_pos, buff = self.buff, color = self.arrow_color, stroke_width = 0.7, tip_length = 0.1)
 
         '''
         To adjust the position of the capacity, we go out in a normal direction to the edge

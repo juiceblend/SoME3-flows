@@ -8,6 +8,7 @@ class Trick(Scene):
     
     def transformpiles(self):
         animations=[]
+        counter = 0
         for group in self.piles_group:
             circle = Dot(radius=0.3, fill_opacity=0.9, color=GREEN)
             circle.move_to(group.get_center())
@@ -24,7 +25,8 @@ class Trick(Scene):
         self.piles_group = VGroup(*self.gpiles) #all piles as a group
 
         self.play(self.piles_group.animate.arrange(DOWN, buff=1.8).scale(0.15), run_time=2)
-
+        self.play(self.piles_group.animate.shift(4*LEFT), run_time=1)
+        
         piles2nodes = self.transformpiles()
         self.play(*piles2nodes, run_time=3)
         
@@ -127,15 +129,16 @@ class Trick(Scene):
         x_coords = [-6.5]
         y_coords = [0]
         for c in pc:
-            x_coords.append(c[0] - 4)
+            x_coords.append(c[0])
             y_coords.append(c[1])
         for c in pc:
-            x_coords.append(c[0] + 4)
+            x_coords.append(c[0] + 8)
             y_coords.append(c[1])
         x_coords.append(6.5)
         y_coords.append(0)
 
         pos = np.array([ x_coords, y_coords, [ 0 for _ in range(28) ] ])
+
 
         n = 28
         r = 0.2
