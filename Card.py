@@ -12,9 +12,9 @@ class Card(Square):
             rank_to_text = 'J'
         elif rank_to_text == 12:
             rank_to_text = 'Q'
-        elif rank_to_text == 11:
+        elif rank_to_text == 13:
             rank_to_text = 'K'
         self.rank_label = rank_to_text
-        rank_text = Text(str(rank_to_text), color=suit)
+        rank_text = Text(str(rank_to_text), color=suit).scale(0.9)
         rank_text.align_to(self.get_corner(UP+LEFT), UP+LEFT).shift(RIGHT*0.3 + DOWN*0.3)
         self.add(rank_text).scale(0.5)
