@@ -9,10 +9,16 @@ class Trick(Scene):
     def transformpiles(self):
         animations=[]
         counter = 0
+        i =1
         for group in self.piles_group:
             circle = Dot(radius=0.2, fill_opacity=0.3, color=GREEN)
             circle.move_to(group.get_center())
+            text = Text(str(i)).scale(0.35)
+            # Position the text at the center of the dot
+            text.move_to(circle.get_center())
+            circle.add(text)
             animations.append(Transform(group, circle))
+            i+=1
         return animations
 
     def construct(self):
@@ -28,8 +34,9 @@ class Trick(Scene):
         self.play(self.piles_group.animate.shift(4*LEFT), run_time=1)
 
         rank_nodes = VGroup()
+        rank_labels = ['A','2','3','4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
         for i in range(13):
-          n = Node(self.piles_group[i].get_center() +np.array([8, 0, 0]), label=str(i+1), R = 0.2, fill_color = GREEN)
+          n = Node(self.piles_group[i].get_center() +np.array([8, 0, 0]), label=rank_labels[i], R = 0.2, fill_color = GREEN)
           n = n.to_VGroup()
           n[0].scale(0.5)
           rank_nodes += n
@@ -38,7 +45,6 @@ class Trick(Scene):
         piles2nodes = self.transformpiles()
         self.play(*piles2nodes, run_time=3)
         self.wait(1)
-        
         
         
         source_adj_row = [0, 
@@ -76,7 +82,7 @@ class Trick(Scene):
 
         adj_mat = np.array(adj_mat_array)
         inf = float("inf")
-        adj_mat = np.array([[ 0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  0,  0,  0,
+        '''adj_mat = np.array([[ 0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  0,  0,  0,
    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,],
  [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, inf,  0,  0,  0,
    0,  0,  0,  0, inf,  0,  0, inf, inf,  0,],
@@ -131,7 +137,7 @@ class Trick(Scene):
  [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
    0,  0,  0,  0,  0,  0,  0,  0,  0,  1,],
  [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,]])
+   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,]]) '''
         
         print(adj_mat)
         pc = [pile.get_center() for pile in self.piles_group]
@@ -148,7 +154,6 @@ class Trick(Scene):
         y_coords.append(0)
 
         pos = np.array([ x_coords, y_coords, [ 0 for _ in range(28) ] ])
-
 
         n = 28
         r = 0.2
