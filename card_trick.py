@@ -187,4 +187,44 @@ class Trick(Scene):
         animations_1 = network.AugmentPath(edges_visited, amount=0)
         anim_group_1 = AnimationGroup(*animations_1)
         self.play(AnimationGroup(anim_group_1, run_time=2, lag_ratio = 0.2))
-        self.wait()
+        self.wait(3)
+
+        # Highlighted part in script -------------------------------------------------
+
+        S_text = Tex("S")
+        T_text = Tex("T")   
+        S_text.shift(UP*3.2 + LEFT * 5.2).scale(0.8)
+        T_text.shift(UP*3.2 + RIGHT * 5.2).scale(0.8)
+        S_text.set_color(RED)
+        T_text.set_color(BLUE)
+
+        self.play(AnimationGroup(*[
+            Nodes[14].animate.set_color(RED),
+            Nodes[17].animate.set_color(RED),
+            Nodes[20].animate.set_color(RED),
+            Nodes[1].animate.set_color(BLUE),
+            Nodes[4].animate.set_color(BLUE),
+            Nodes[7].animate.set_color(BLUE),
+            FadeIn(S_text),
+            FadeIn(T_text)], run_time=1, lag_ratio = 0))
+        
+        self.wait(2)
+
+        animations_1 = network.AugmentPath([[14, 27]], amount=0)
+        animations_2 = network.AugmentPath([[17, 27]], amount = 0)
+        animations_3 = network.AugmentPath([[20, 27]], amount = 0)
+        self.play(*animations_1, *animations_2, *animations_3, run_time = 2)
+        self.wait(3)
+
+        animations_4 = network.AugmentPath([[0, 1]], amount=0)
+        animations_5 = network.AugmentPath([[0, 4]], amount = 0)
+        animations_6 = network.AugmentPath([[0, 7]], amount = 0)
+        self.play(*animations_4, *animations_5, *animations_6, run_time = 2)
+        self.wait(3)
+
+
+
+
+
+
+
