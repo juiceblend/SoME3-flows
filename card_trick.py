@@ -32,9 +32,9 @@ class Trick(Scene):
           n = Node(self.piles_group[i].get_center() +np.array([8, 0, 0]), label=str(i+1), R = 0.2, fill_color = GREEN)
           n = n.to_VGroup()
           n[0].scale(0.5)
-          self.play(Write(n), run_time = 0.3)
           rank_nodes += n
 
+        self.play(Write(rank_nodes), run_time = 1.5)
         piles2nodes = self.transformpiles()
         self.play(*piles2nodes, run_time=3)
         self.wait(1)
@@ -183,7 +183,8 @@ class Trick(Scene):
                 if edge not in edges_visited and sorted(edge) not in edges_visited:
                     edges_visited.append(edge)
 
-        #print(edges_visited)
+        # Show matching ------------------------------------------------------------------
+
         animations_1 = network.AugmentPath(edges_visited, amount=0)
         anim_group_1 = AnimationGroup(*animations_1)
         self.play(AnimationGroup(anim_group_1, run_time=2, lag_ratio = 0.2))
