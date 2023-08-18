@@ -10,7 +10,7 @@ class Trick(Scene):
         animations=[]
         counter = 0
         for group in self.piles_group:
-            circle = Dot(radius=0.3, fill_opacity=0.9, color=GREEN)
+            circle = Dot(radius=0.2, fill_opacity=0.3, color=GREEN)
             circle.move_to(group.get_center())
             animations.append(Transform(group, circle))
         return animations
@@ -26,9 +26,19 @@ class Trick(Scene):
 
         self.play(self.piles_group.animate.arrange(DOWN, buff=1.8).scale(0.15), run_time=2)
         self.play(self.piles_group.animate.shift(4*LEFT), run_time=1)
-        
+
+        rank_nodes = VGroup()
+        for i in range(13):
+          n = Node(self.piles_group[i].get_center() +np.array([8, 0, 0]), label=str(i+1), R = 0.2, fill_color = GREEN)
+          n = n.to_VGroup()
+          n[0].scale(0.5)
+          self.play(Write(n), run_time = 0.3)
+          rank_nodes += n
+
         piles2nodes = self.transformpiles()
         self.play(*piles2nodes, run_time=3)
+        self.wait(1)
+        
         
         
         source_adj_row = [0, 
@@ -154,7 +164,7 @@ class Trick(Scene):
             node[0].scale(0.5)
 
         # draw network
-        self.play(FadeOut(self.piles_group), run_time=0.5)
+        self.play(FadeOut(self.piles_group), FadeOut(rank_nodes), run_time=0.5)
 
         self.play(Write(VGroup(Nodes, Edges)), run_time = 5)
         INF = int(1e9)
