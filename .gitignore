@@ -1,2 +1,9 @@
 *.pyc
+<<<<<<< Updated upstream
 **/media
+=======
+**/media
+test.py
+.DS_Store
+**/Adobe\ Premier\ Pro\ Auto-Save
+>>>>>>> Stashed changes

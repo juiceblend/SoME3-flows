@@ -112,7 +112,11 @@ class Path_Flow(Scene):
         self.add(else_object)
         self.wait(1)
 
-        self.play(Indicate(route_trains), run_time=3)
+        self.play(AnimationGroup(*[
+            Indicate(route_trains[0]), 
+            Indicate(route_trains[1]), 
+            Indicate(route_trains[2])], 
+            run_time=3, lag_ratio = 0))
 
         self.play(AnimationGroup(*[FadeOut(else_object), MoveToTarget(route_object)], run_time=2, lag_ratio = 0.3))
 

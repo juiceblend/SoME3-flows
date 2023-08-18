@@ -61,7 +61,7 @@ class TableOfContents(Scene):
 
 class ChapterOne(Scene):
     def construct(self):
-        title = Tex("1. What is a network?")
+        title = Tex("1. What is a network?").scale(1.5)
         self.play(FadeIn(title))
         self.wait(4)
 
@@ -81,11 +81,63 @@ class ChapterTwoPt2(Scene):
         self.play(FadeIn(title[2]))
         self.wait(4)
 
+class ChapterThree(Scene):
+    def construct(self):
+        title = Tex("3. Card matching as a network").scale(1.5)
+        self.play(FadeIn(title))
+        self.wait(4)
+
+class Conclusion(Scene):
+    def construct(self):
+        title = Tex("Conclusion").scale(1.5)
+        self.play(FadeIn(title))
+        self.wait(4)
+
 '''
 Thumbnail constructors:
 Run with the -s flag to generate an image
     i.e. manim -s overview_elements.py NetworkThumbnail
 '''
+
+class TableOfContentsThumbnail(Scene):
+    def construct(self):
+
+        # ---------------------- Setup ----------------------
+
+        network_image = ImageMobject("assets\\NetworkThumbnail.png")
+        network_image.height = 2
+        network_image.to_corner(UL)
+        box1 = SurroundingRectangle(network_image, color=WHITE, buff=SMALL_BUFF)
+        text1 = Tex("1. What are network flows?")
+        text1.scale(0.8)
+        text1.next_to(box1)
+        group1 = Group(network_image, box1, text1)
+        highlight1 = SurroundingRectangle(group1, color=YELLOW, buff=SMALL_BUFF)
+
+        flow_image = ImageMobject("assets\\NetworkThumbnail.png")
+        flow_image.height = 2
+        flow_image.next_to(box1, DOWN)
+        box2 = SurroundingRectangle(flow_image, color=WHITE, buff=SMALL_BUFF)
+        text2 = Tex("2. Finding the maximum flow \\\\ through a network")
+        text2.scale(0.8)
+        text2.next_to(box2)
+        group2 = Group(box2, flow_image, text2)
+        highlight2 = SurroundingRectangle(group2, color=YELLOW, buff=SMALL_BUFF)
+
+        card_image = ImageMobject("assets\\NetworkThumbnail.png")
+        card_image.height = 2
+        card_image.next_to(box2, DOWN)
+        box3 = SurroundingRectangle(card_image, color=WHITE, buff=SMALL_BUFF)
+        text3 = Tex("3. Card matching as a network")
+        text3.scale(0.8)
+        text3.next_to(box3)
+        group3 = Group(box3, card_image, text3)
+        highlight3 = SurroundingRectangle(group3, color=YELLOW, buff=SMALL_BUFF)
+
+        # ---------------------- Animations ----------------------
+
+        self.add(VGroup(group1,group2,group3))  
+        self.wait(10)
 
 class NetworkThumbnail(Scene):
     def construct(self):
