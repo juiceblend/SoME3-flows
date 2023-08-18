@@ -142,12 +142,14 @@ class Edge:
             'buff': end_node.R + (np.linalg.norm(self.end_pos - self.start_pos)/10),
             'display_capacity': False,
             'current_flow': 0,
+            'display_flow': False, #set to true if you want to display only the flow
             'arrow_color': "WHITE"
         }
         init_values.update(kwargs)
 
         self.buff = init_values['buff']
         self.display_capacity = init_values['display_capacity']
+        self.display_flow = init_values['display_flow']
         self.current_flow = init_values['current_flow']
         self.arrow_color = init_values['arrow_color']
 
@@ -186,6 +188,8 @@ class Edge:
             edge_text = Tex(str(self.capacity), color = RED).scale(0.6) # adjust font size
             edge_text.move_to(self.midpt - 0.5*self.unit_normal) # set position of capacity text relative to the edge
             edge_group = VGroup(edge_text, edge, flow_text)
+        if self.display_flow:
+             edge_group = VGroup(edge, flow_text)
         else:
             edge_group = edge
 
