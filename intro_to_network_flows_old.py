@@ -74,20 +74,22 @@ class Path_Flow(Scene):
         Ghent = Node([-2.5, -3, 0], 'Ghent')
         Brussels = Node([0,0,0], 'Brussels')
         Rotterdam = Node([2.5, -3, 0], 'Rotterdam')
+        dis = True
 
-        train1 = Edge(Paris, Calais, 8, display_capacity = True)
-        train2 = Edge(Calais, Antwerp, 6, display_capacity = True)
-        train3 = Edge(Antwerp, Amsterdam, 11, display_capacity = True)
+        train1 = Edge(Paris, Calais, 8, current_flow=8, display_flow=dis) #current flow is actually the capacity but we are too lazy to 
+        train2 = Edge(Calais, Antwerp, 6, current_flow=6, display_flow=dis) #change it properly
+        train3 = Edge(Antwerp, Amsterdam, 11, current_flow=11, display_flow=dis)
 
-        other_trains = [Edge(Paris, Brussels, 5, display_capacity = True),
-                        Edge(Paris, Ghent, 9, display_capacity = True),
-                        Edge(Ghent, Brussels, 7, display_capacity = True),
-                        Edge(Ghent, Rotterdam, 5, display_capacity = True),
-                        Edge(Rotterdam, Amsterdam, 13, display_capacity = True),
-                        Edge(Rotterdam, Antwerp, 4, display_capacity = True),
-                        Edge(Brussels, Antwerp, 2, display_capacity = True),
-                        Edge(Brussels, Calais, 1, display_capacity = True),
-                        Edge(Brussels, Rotterdam, 6, display_capacity = True)]
+
+        other_trains = [Edge(Paris, Brussels, 5, current_flow=5, display_flow=dis),
+                        Edge(Paris, Ghent, 9, current_flow=9, display_flow=dis),
+                        Edge(Ghent, Brussels, 7, current_flow=7, display_flow=dis),
+                        Edge(Ghent, Rotterdam, 5, current_flow=5, display_flow=dis),
+                        Edge(Rotterdam, Amsterdam, 13, current_flow=13, display_flow=dis),
+                        Edge(Rotterdam, Antwerp, 4, current_flow=4, display_flow=dis),
+                        Edge(Brussels, Antwerp, 2, current_flow=2, display_flow=dis),
+                        Edge(Brussels, Calais, 1, current_flow=1, display_flow=dis),
+                        Edge(Brussels, Rotterdam, 6, current_flow=6, display_flow=dis)]
 
         route = Network([Paris, Calais, Antwerp, Amsterdam], [train1, train2, train3])
         route_cities, route_trains = route.to_VGroup()
