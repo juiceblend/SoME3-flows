@@ -67,13 +67,14 @@ class Path_Flow(Scene):
 
         # ---------------------- Setup ----------------------
 
-        Paris = Node([-5,0,0], 'Paris', fill_color=GREEN)
+        Paris = Node([-5,0,0],'Paris', fill_color=GREEN)
         Amsterdam = Node([5,0,0], 'Amsterdam', fill_color=GREEN)
         Calais = Node([-2.5, 3, 0], 'Calais')
         Antwerp = Node([2.5, 3, 0], 'Antwerp')
         Ghent = Node([-2.5, -3, 0], 'Ghent')
         Brussels = Node([0,0,0], 'Brussels')
         Rotterdam = Node([2.5, -3, 0], 'Rotterdam')
+
         dis = True
 
         train1 = Edge(Paris, Calais, 8, current_flow=8, display_flow=dis) #current flow is actually the capacity but we are too lazy to 
@@ -93,10 +94,11 @@ class Path_Flow(Scene):
 
         route = Network([Paris, Calais, Antwerp, Amsterdam], [train1, train2, train3])
         route_cities, route_trains = route.to_VGroup()
-        route_object = VGroup(route_cities, route_trains)
-
         everything_else = Network([Ghent, Brussels, Rotterdam], other_trains)
         else_cities, else_trains = everything_else.to_VGroup()
+
+        route_object = VGroup(route_cities, route_trains)
+
         else_object = VGroup(else_cities, else_trains)
 
         max_along_path_text = Tex("Maximum capacity along route $= 6$")
@@ -114,7 +116,7 @@ class Path_Flow(Scene):
         self.add(else_object)
         self.wait(1)
 
-        self.play(Indicate(route_trains), run_time=3)
+        self.play(*[Indicate(route) for route in route_trains], run_time=3)
 
         self.play(AnimationGroup(*[FadeOut(else_object), MoveToTarget(route_object)], run_time=2, lag_ratio = 0.3))
 
