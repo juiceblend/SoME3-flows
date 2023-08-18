@@ -79,7 +79,7 @@ class Trick(Scene):
             adj_mat_array += [array]
 
         adj_mat_array += [sink_adj_row]  
-
+        print(adj_mat)
         adj_mat = np.array(adj_mat_array)
         inf = float("inf")
         '''adj_mat = np.array([[ 0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  0,  0,  0,
@@ -139,7 +139,6 @@ class Trick(Scene):
  [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,]]) '''
         
-        print(adj_mat)
         pc = [pile.get_center() for pile in self.piles_group]
 
         x_coords = [-6.5]
